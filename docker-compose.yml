@@ -1,0 +1,26 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.6
+    container_name: mydb
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=mydb1
+    volumes:
+    - mysqldata:/var/lib/mysql
+  backend:
+    image: 646702086747.dkr.ecr.ap-south-1.amazonaws.com/backendcontainerimage:latest 
+    container_name: backend
+    depends_on:
+    - mysql
+    links:
+    - mysql
+  frontend:
+    image: 646702086747.dkr.ecr.ap-south-1.amazonaws.com/nginx3:latest
+    container_name: frontend
+    depends_on:
+    - backend
+    ports:
+    - 80:80
+volumes:
+  mysqldata:
